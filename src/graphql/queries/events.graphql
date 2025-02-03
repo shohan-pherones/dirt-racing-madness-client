@@ -1,0 +1,29 @@
+query Events {
+  events {
+    id
+    name
+    description
+    imageUrl
+    dateTime
+    location
+    capacity
+    status
+    createdAt
+    updatedAt
+  }
+}
+
+query Event($id: String!) {
+  event(id: $id) {
+    id
+    name
+    description
+    imageUrl
+    dateTime
+    location
+    capacity
+    status
+    createdAt
+    updatedAt
+  }
+}
