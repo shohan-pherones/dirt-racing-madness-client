@@ -31,7 +31,9 @@ const EventCard = ({ event }: EventCardProps) => {
           {event.status}
         </span>
         <h2 className="card-title">{event.name}</h2>
-        <p className="text-sm opacity-50">{event.description}</p>
+        <p className="text-sm opacity-50">
+          {event.description.substring(0, 50)}...
+        </p>
         <ul className="text-sm">
           <li>
             <b>Date:</b> {format(event.dateTime, "dd-MM-yyyy 'at' hh:mm a")}
