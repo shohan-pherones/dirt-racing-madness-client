@@ -11,16 +11,14 @@ const EventsPage = () => {
   if (error) return <Error message={error.message} />;
 
   return (
-    <main className="min-h-screen">
-      <section className="container py-10 md:py-20">
-        <SectionTitle>Events: {data?.events.length}</SectionTitle>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 md:gap-10">
-          {data?.events.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
-        </div>
-      </section>
-    </main>
+    <section className="container py-10 md:py-20">
+      <SectionTitle>Events: {data?.events.length}</SectionTitle>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 md:gap-10">
+        {data?.events.map((event) => (
+          <EventCard key={event.id} event={event} />
+        ))}
+      </div>
+    </section>
   );
 };
 

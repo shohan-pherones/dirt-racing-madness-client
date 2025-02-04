@@ -2,9 +2,9 @@ import EventsPage from "./events/page";
 
 const HomePage = () => {
   return (
-    <main>
+    <div>
       <EventsPage />
-    </main>
+    </div>
   );
 };
 

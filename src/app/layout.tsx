@@ -21,7 +21,7 @@ export default function RootLayout({
     <ApolloClientProvider>
       <html lang="en" data-theme="cupcake">
         <body className={cn(spaceGrotesk.className, "antialiased")}>
-          {children}
+          <main className="min-h-screen">{children}</main>
         </body>
       </html>
     </ApolloClientProvider>
