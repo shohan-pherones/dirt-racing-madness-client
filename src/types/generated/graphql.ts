@@ -18,6 +18,23 @@ export type Scalars = {
   DateTime: { input: any; output: any; }
 };
 
+export type AuthResponse = {
+  __typename?: 'AuthResponse';
+  token: Scalars['String']['output'];
+  user: User;
+};
+
+export type Booking = {
+  __typename?: 'Booking';
+  createdAt: Scalars['DateTime']['output'];
+  event: Event;
+  eventId: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  user: User;
+  userId: Scalars['String']['output'];
+};
+
 export type CreateEventInput = {
   capacity: Scalars['Int']['input'];
   dateTime: Scalars['DateTime']['input'];
@@ -29,6 +46,7 @@ export type CreateEventInput = {
 
 export type Event = {
   __typename?: 'Event';
+  bookings: Array<Booking>;
   capacity: Scalars['Int']['output'];
   createdAt: Scalars['DateTime']['output'];
   dateTime: Scalars['DateTime']['output'];
@@ -39,6 +57,8 @@ export type Event = {
   name: Scalars['String']['output'];
   status: EventStatus;
   updatedAt: Scalars['DateTime']['output'];
+  user: User;
+  userId: Scalars['String']['output'];
 };
 
 export enum EventStatus {
@@ -50,11 +70,23 @@ export enum EventStatus {
 export type Mutation = {
   __typename?: 'Mutation';
   createEvent: Event;
+  signIn: AuthResponse;
+  signUp: AuthResponse;
 };
 
 
 export type MutationCreateEventArgs = {
   createEventInput: CreateEventInput;
+};
+
+
+export type MutationSignInArgs = {
+  signInInput: SignInInput;
+};
+
+
+export type MutationSignUpArgs = {
+  signUpInput: SignUpInput;
 };
 
 export type Query = {
@@ -68,17 +100,63 @@ export type QueryEventArgs = {
   id: Scalars['String']['input'];
 };
 
+export enum Role {
+  Admin = 'ADMIN',
+  Moderator = 'MODERATOR',
+  User = 'USER'
+}
+
+export enum Sex {
+  Female = 'FEMALE',
+  Male = 'MALE',
+  Other = 'OTHER'
+}
+
+export type SignInInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+export type SignUpInput = {
+  address?: InputMaybe<Scalars['String']['input']>;
+  bio?: InputMaybe<Scalars['String']['input']>;
+  email: Scalars['String']['input'];
+  imageUrl?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  phoneNumber?: InputMaybe<Scalars['String']['input']>;
+  sex: Sex;
+};
+
+export type User = {
+  __typename?: 'User';
+  address?: Maybe<Scalars['String']['output']>;
+  bio?: Maybe<Scalars['String']['output']>;
+  bookings: Array<Booking>;
+  createdAt: Scalars['DateTime']['output'];
+  email: Scalars['String']['output'];
+  events: Array<Event>;
+  id: Scalars['String']['output'];
+  imageUrl?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  password: Scalars['String']['output'];
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  role: Role;
+  sex: Sex;
+  updatedAt: Scalars['DateTime']['output'];
+};
+
 export type EventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type EventsQuery = { __typename?: 'Query', events: Array<{ __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus }> };
+export type EventsQuery = { __typename?: 'Query', events: Array<{ __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus, createdAt: any, updatedAt: any }> };
 
 export type EventQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type EventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus } };
+export type EventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus, createdAt: any, updatedAt: any } };
 
 
 export const EventsDocument = gql`
@@ -92,6 +170,8 @@ export const EventsDocument = gql`
     location
     capacity
     status
+    createdAt
+    updatedAt
   }
 }
     `;
@@ -138,6 +218,8 @@ export const EventDocument = gql`
     location
     capacity
     status
+    createdAt
+    updatedAt
   }
 }
     `;

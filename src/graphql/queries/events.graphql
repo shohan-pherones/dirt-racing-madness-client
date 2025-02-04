@@ -8,6 +8,8 @@ query Events {
     location
     capacity
     status
+    createdAt
+    updatedAt
   }
 }
 
@@ -21,5 +23,7 @@ query Event($id: String!) {
     location
     capacity
     status
+    createdAt
+    updatedAt
   }
 }
