@@ -5,7 +5,17 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface EventCardProps {
-  event: Event;
+  event: Pick<
+    Event,
+    | "id"
+    | "name"
+    | "description"
+    | "imageUrl"
+    | "dateTime"
+    | "location"
+    | "capacity"
+    | "status"
+  >;
 }
 
 const EventCard = ({ event }: EventCardProps) => {
