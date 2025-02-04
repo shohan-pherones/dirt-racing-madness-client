@@ -146,6 +146,20 @@ export type User = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type SignUpMutationVariables = Exact<{
+  signUpInput: SignUpInput;
+}>;
+
+
+export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'AuthResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string, imageUrl?: string | null, sex: Sex, role: Role, address?: string | null, phoneNumber?: string | null, bio?: string | null } } };
+
+export type SignInMutationVariables = Exact<{
+  signInInput: SignInInput;
+}>;
+
+
+export type SignInMutation = { __typename?: 'Mutation', signIn: { __typename?: 'AuthResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string, imageUrl?: string | null, sex: Sex, role: Role, address?: string | null, phoneNumber?: string | null, bio?: string | null } } };
+
 export type EventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -159,6 +173,94 @@ export type EventQueryVariables = Exact<{
 export type EventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus } };
 
 
+export const SignUpDocument = gql`
+    mutation SignUp($signUpInput: SignUpInput!) {
+  signUp(signUpInput: $signUpInput) {
+    token
+    user {
+      id
+      name
+      email
+      imageUrl
+      sex
+      role
+      address
+      phoneNumber
+      bio
+    }
+  }
+}
+    `;
+export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>;
+
+/**
+ * __useSignUpMutation__
+ *
+ * To run a mutation, you first call `useSignUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signUpMutation, { data, loading, error }] = useSignUpMutation({
+ *   variables: {
+ *      signUpInput: // value for 'signUpInput'
+ *   },
+ * });
+ */
+export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignUpMutation, SignUpMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, options);
+      }
+export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
+export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
+export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const SignInDocument = gql`
+    mutation SignIn($signInInput: SignInInput!) {
+  signIn(signInInput: $signInInput) {
+    token
+    user {
+      id
+      name
+      email
+      imageUrl
+      sex
+      role
+      address
+      phoneNumber
+      bio
+    }
+  }
+}
+    `;
+export type SignInMutationFn = Apollo.MutationFunction<SignInMutation, SignInMutationVariables>;
+
+/**
+ * __useSignInMutation__
+ *
+ * To run a mutation, you first call `useSignInMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignInMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signInMutation, { data, loading, error }] = useSignInMutation({
+ *   variables: {
+ *      signInInput: // value for 'signInInput'
+ *   },
+ * });
+ */
+export function useSignInMutation(baseOptions?: Apollo.MutationHookOptions<SignInMutation, SignInMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignInMutation, SignInMutationVariables>(SignInDocument, options);
+      }
+export type SignInMutationHookResult = ReturnType<typeof useSignInMutation>;
+export type SignInMutationResult = Apollo.MutationResult<SignInMutation>;
+export type SignInMutationOptions = Apollo.BaseMutationOptions<SignInMutation, SignInMutationVariables>;
 export const EventsDocument = gql`
     query Events {
   events {
