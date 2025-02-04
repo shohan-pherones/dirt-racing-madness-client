@@ -149,14 +149,14 @@ export type User = {
 export type EventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type EventsQuery = { __typename?: 'Query', events: Array<{ __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus, createdAt: any, updatedAt: any }> };
+export type EventsQuery = { __typename?: 'Query', events: Array<{ __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus }> };
 
 export type EventQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type EventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus, createdAt: any, updatedAt: any } };
+export type EventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus } };
 
 
 export const EventsDocument = gql`
@@ -170,8 +170,6 @@ export const EventsDocument = gql`
     location
     capacity
     status
-    createdAt
-    updatedAt
   }
 }
     `;
@@ -218,8 +216,6 @@ export const EventDocument = gql`
     location
     capacity
     status
-    createdAt
-    updatedAt
   }
 }
     `;

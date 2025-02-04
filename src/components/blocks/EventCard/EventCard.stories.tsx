@@ -18,7 +18,17 @@ export default meta;
 
 type Story = StoryObj<typeof EventCard>;
 
-const mockEvent: Event = {
+const mockEvent: Pick<
+  Event,
+  | "id"
+  | "name"
+  | "description"
+  | "imageUrl"
+  | "dateTime"
+  | "location"
+  | "capacity"
+  | "status"
+> = {
   id: "1",
   name: "Sample Event",
   description: "This is a sample event description.",
@@ -27,8 +37,6 @@ const mockEvent: Event = {
   capacity: 100,
   status: EventStatus.Upcoming,
   imageUrl: "/images/placeholder.png",
-  createdAt: undefined,
-  updatedAt: undefined,
 };
 
 export const UpcomingEvent: Story = {
