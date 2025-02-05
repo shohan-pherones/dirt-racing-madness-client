@@ -1,3 +1,4 @@
+import { store } from "@/redux/store/store";
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
@@ -6,7 +7,9 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem("token");
+  const { auth } = store.getState();
+  const token = auth.token;
+
   return {
     headers: {
       ...headers,

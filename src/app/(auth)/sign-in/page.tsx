@@ -2,17 +2,26 @@
 
 import { FormInput, Processing, SectionTitle } from "@/components/elements";
 import { signInInputFields } from "@/constants";
+import { useAuth } from "@/hooks/useAuth";
 import { SignInSchema } from "@/schemas/signInSchema";
-import { SignInInput, useSignInMutation } from "@/types/generated/graphql";
+import {
+  AuthResponse,
+  SignInInput,
+  useSignInMutation,
+} from "@/types/generated/graphql";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 const SignInPage = () => {
   const methods = useForm<SignInInput>({
     resolver: zodResolver(SignInSchema),
   });
   const [signInMutation, { loading }] = useSignInMutation();
+  const { login } = useAuth();
+  const router = useRouter();
 
   const onSubmit = async (data: SignInInput) => {
     try {
@@ -21,9 +30,12 @@ const SignInPage = () => {
           signInInput: data,
         },
       });
-      console.log("Signin successful:", res.data);
+      if (res.data?.signIn) {
+        login(res.data.signIn as AuthResponse);
+        router.push("/");
+      }
     } catch (error) {
-      console.error("Signin failed:", error);
+      toast.error(error);
     }
   };
 

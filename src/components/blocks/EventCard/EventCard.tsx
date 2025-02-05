@@ -27,6 +27,7 @@ const EventCard = ({ event }: EventCardProps) => {
           alt={event.name}
           width={1280}
           height={720}
+          priority
         />
       </figure>
       <div className="card-body">

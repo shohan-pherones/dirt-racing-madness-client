@@ -21,17 +21,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ApolloClientProvider>
-      <ReduxStoreProvider>
-        <html lang="en" data-theme="sunset">
-          <body className={cn(spaceGrotesk.className, "antialiased")}>
+    <html lang="en" data-theme="sunset">
+      <body className={cn(spaceGrotesk.className, "antialiased")}>
+        <ApolloClientProvider>
+          <ReduxStoreProvider>
             <Toaster position="bottom-right" reverseOrder={false} />
             <Header />
             <main className="min-h-screen">{children}</main>
             <Footer />
-          </body>
-        </html>
-      </ReduxStoreProvider>
-    </ApolloClientProvider>
+          </ReduxStoreProvider>
+        </ApolloClientProvider>
+      </body>
+    </html>
   );
 }

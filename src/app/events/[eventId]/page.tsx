@@ -34,6 +34,7 @@ const EventDetailsPage = ({
           alt={data.event.name}
           width={1920}
           height={1080}
+          priority
           className="w-full h-full object-cover"
         />
       </figure>
