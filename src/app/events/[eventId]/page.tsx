@@ -1,8 +1,8 @@
 "use client";
 
 import { Error, Loading, SectionTitle } from "@/components/elements";
-import { useEvent } from "@/hooks/useEvent";
 import { cn } from "@/lib/utils";
+import { useEventQuery } from "@/types/generated/graphql";
 import { format } from "date-fns";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
@@ -15,7 +15,9 @@ const EventDetailsPage = ({
   params: Promise<{ eventId: string }>;
 }) => {
   const { eventId } = use(params);
-  const { data, loading, error } = useEvent(eventId);
+  const { data, loading, error } = useEventQuery({
+    variables: { id: eventId },
+  });
   const router = useRouter();
 
   if (loading) return <Loading />;

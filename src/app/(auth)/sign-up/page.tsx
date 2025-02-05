@@ -2,9 +2,8 @@
 
 import { FormInput, Processing, SectionTitle } from "@/components/elements";
 import { signUpInputFields } from "@/constants";
-import { useSignUp } from "@/hooks/useSignUp";
 import { SignUpSchema } from "@/schemas/signUpSchema";
-import { SignUpInput } from "@/types/generated/graphql";
+import { SignUpInput, useSignUpMutation } from "@/types/generated/graphql";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
@@ -13,12 +12,16 @@ const SignUpPage = () => {
   const methods = useForm<SignUpInput>({
     resolver: zodResolver(SignUpSchema),
   });
-  const { signUp, loading } = useSignUp();
+  const [signUpMutation, { loading }] = useSignUpMutation();
 
   const onSubmit = async (data: SignUpInput) => {
     try {
-      const res = await signUp(data);
-      console.log("Signed up:", res);
+      const res = await signUpMutation({
+        variables: {
+          signUpInput: data,
+        },
+      });
+      console.log("Signup successful:", res.data);
     } catch (error) {
       console.error("Signup failed:", error);
     }

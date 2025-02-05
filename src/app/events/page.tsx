@@ -2,10 +2,10 @@
 
 import { EventCard } from "@/components/blocks";
 import { Error, Loading, SectionTitle } from "@/components/elements";
-import { useEvents } from "@/hooks/useEvents";
+import { useEventsQuery } from "@/types/generated/graphql";
 
 const EventsPage = () => {
-  const { data, loading, error } = useEvents();
+  const { data, loading, error } = useEventsQuery();
 
   if (loading) return <Loading />;
   if (error) return <Error message={error.message} />;
