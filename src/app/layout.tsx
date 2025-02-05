@@ -1,3 +1,4 @@
+import { Footer, Header } from "@/components/blocks";
 import { cn } from "@/lib/utils";
 import ApolloClientProvider from "@/providers/ApolloClientProvider";
 import type { Metadata } from "next";
@@ -19,9 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <ApolloClientProvider>
-      <html lang="en" data-theme="cupcake">
+      <html lang="en" data-theme="sunset">
         <body className={cn(spaceGrotesk.className, "antialiased")}>
+          <Header />
           <main className="min-h-screen">{children}</main>
+          <Footer />
         </body>
       </html>
     </ApolloClientProvider>

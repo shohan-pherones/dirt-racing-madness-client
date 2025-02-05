@@ -20,7 +20,7 @@ interface EventCardProps {
 
 const EventCard = ({ event }: EventCardProps) => {
   return (
-    <article className="card bg-white shadow">
+    <article className="card bg-base-300 shadow">
       <figure className="aspect-video">
         <Image
           src={event.imageUrl || "/images/placeholder.png"}
@@ -33,9 +33,9 @@ const EventCard = ({ event }: EventCardProps) => {
         <span
           className={cn(
             "badge",
-            event.status === "UPCOMING" && "badge-secondary",
-            event.status === "RUNNING" && "badge-accent",
-            event.status === "PAST" && "badge-error"
+            event.status === "UPCOMING" && "badge-primary",
+            event.status === "RUNNING" && "badge-secondary",
+            event.status === "PAST" && "badge-accent"
           )}
         >
           {event.status}
@@ -56,7 +56,7 @@ const EventCard = ({ event }: EventCardProps) => {
           </li>
         </ul>
         <div className="card-actions justify-end">
-          <Link href={`/events/${event.id}`} className="btn btn-primary">
+          <Link href={`/events/${event.id}`} className="btn btn-secondary">
             View Details
           </Link>
         </div>

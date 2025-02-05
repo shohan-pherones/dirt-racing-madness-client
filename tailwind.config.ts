@@ -20,6 +20,6 @@ export default {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["cupcake"],
+    themes: ["sunset"],
   },
 } satisfies Config;

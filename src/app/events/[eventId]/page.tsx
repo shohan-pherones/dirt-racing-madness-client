@@ -42,9 +42,9 @@ const EventDetailsPage = ({
           <span
             className={cn(
               "badge",
-              data.event.status === "UPCOMING" && "badge-secondary",
-              data.event.status === "RUNNING" && "badge-accent",
-              data.event.status === "PAST" && "badge-error"
+              data.event.status === "UPCOMING" && "badge-primary",
+              data.event.status === "RUNNING" && "badge-secondary",
+              data.event.status === "PAST" && "badge-accent"
             )}
           >
             {data.event.status}
@@ -75,7 +75,10 @@ const EventDetailsPage = ({
               <button className="btn" onClick={() => router.back()}>
                 <ArrowLeft size={16} /> Go Back
               </button>
-              <button className="btn btn-primary" onClick={handleRegisterEntry}>
+              <button
+                className="btn btn-secondary"
+                onClick={handleRegisterEntry}
+              >
                 Register Entry
               </button>
             </div>

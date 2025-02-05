@@ -44,14 +44,14 @@ const SignInPage = () => {
           <button
             disabled={loading}
             type="submit"
-            className="btn btn-primary w-full"
+            className="btn btn-secondary w-full"
           >
             {loading ? <Processing /> : "Sign In"}
           </button>
         </form>
         <p className="mt-2.5">
           Don&apos; have an account?{" "}
-          <Link href="/sign-up" className="link link-primary">
+          <Link href="/sign-up" className="link link-secondary">
             Sign Up
           </Link>
         </p>
