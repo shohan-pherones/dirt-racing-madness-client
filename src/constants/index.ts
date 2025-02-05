@@ -48,3 +48,18 @@ export const signUpInputFields = [
     type: "text",
   },
 ];
+
+export const signInInputFields = [
+  {
+    name: "email",
+    label: "Email",
+    placeholder: "Enter your email",
+    type: "email",
+  },
+  {
+    name: "password",
+    label: "Password",
+    placeholder: "Enter your password",
+    type: "password",
+  },
+];
