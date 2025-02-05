@@ -15,10 +15,14 @@ interface EventCardProps {
     | "location"
     | "capacity"
     | "status"
-  >;
+  > & { bookings?: { id: string }[] | null };
 }
 
 const EventCard = ({ event }: EventCardProps) => {
+  const availableEntries = event.bookings?.length
+    ? event.capacity - event.bookings.length
+    : event.capacity;
+
   return (
     <article className="card bg-base-300 shadow">
       <figure className="aspect-video">
@@ -53,7 +57,7 @@ const EventCard = ({ event }: EventCardProps) => {
             <b>Location:</b> {event.location}
           </li>
           <li>
-            <b>Available Entries:</b> {event.capacity}
+            <b>Available Entries:</b> {availableEntries}
           </li>
         </ul>
         <div className="card-actions justify-end">

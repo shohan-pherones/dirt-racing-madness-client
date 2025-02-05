@@ -11,6 +11,7 @@ mutation SignUp($signUpInput: SignUpInput!) {
       address
       phoneNumber
       bio
+      createdAt
     }
   }
 }
@@ -28,6 +29,7 @@ mutation SignIn($signInInput: SignInInput!) {
       address
       phoneNumber
       bio
+      createdAt
     }
   }
 }

@@ -63,3 +63,42 @@ export const signInInputFields = [
     type: "password",
   },
 ];
+
+export const createEventInputFields = [
+  {
+    name: "name",
+    label: "Event Name",
+    placeholder: "Enter the event name",
+    type: "text",
+  },
+  {
+    name: "description",
+    label: "Event Description",
+    placeholder: "Enter the event description",
+    type: "text",
+  },
+  {
+    name: "imageUrl",
+    label: "Event Image URL (Optional)",
+    placeholder: "Enter the event image URL",
+    type: "text",
+  },
+  {
+    name: "dateTime",
+    label: "Event Date and Time",
+    placeholder: "Enter the event date and time",
+    type: "datetime-local",
+  },
+  {
+    name: "location",
+    label: "Event Location",
+    placeholder: "Enter the event location",
+    type: "text",
+  },
+  {
+    name: "capacity",
+    label: "Event Capacity",
+    placeholder: "Enter the event capacity",
+    type: "number",
+  },
+];

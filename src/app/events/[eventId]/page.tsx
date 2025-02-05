@@ -1,11 +1,13 @@
 "use client";
 
 import { Error, Loading, SectionTitle } from "@/components/elements";
+import Avatar from "@/components/elements/Avatar/Avatar";
 import { cn } from "@/lib/utils";
 import { useEventQuery } from "@/types/generated/graphql";
 import { format } from "date-fns";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
 import { use } from "react";
 
@@ -24,6 +26,10 @@ const EventDetailsPage = ({
   if (error) return <Error message={error.message} />;
   if (!data?.event.id) return notFound();
 
+  const availableEntries = data.event.bookings?.length
+    ? data.event.capacity - data.event.bookings.length
+    : data.event.capacity;
+
   const handleRegisterEntry = () => {};
 
   return (
@@ -39,7 +45,7 @@ const EventDetailsPage = ({
         />
       </figure>
       <div className="flex flex-col gap-2.5 md:gap-5">
-        <div>
+        <div className="flex flex-col gap-2.5">
           <span
             className={cn(
               "badge",
@@ -53,6 +59,18 @@ const EventDetailsPage = ({
           <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold">
             {data.event.name}
           </h1>
+          <div className="flex items-center gap-2.5 md:gap-5">
+            <Avatar user={data.event.user} />
+            <p className="flex flex-col">
+              <span className="text-sm">Created by</span>
+              <Link
+                href={`/profile/${data.event.user.id}`}
+                className="text-accent font-medium"
+              >
+                {data.event.user.name}
+              </Link>
+            </p>
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10">
           <div className="flex flex-col gap-2.5 md:gap-5">
@@ -69,7 +87,7 @@ const EventDetailsPage = ({
                 <b>Location:</b> {data.event.location}
               </li>
               <li>
-                <b>Available Entries:</b> {data.event.capacity}
+                <b>Available Entries:</b> {availableEntries}
               </li>
             </ul>
             <div className="flex items-center gap-2.5 md:gap-5">

@@ -46,7 +46,7 @@ export type CreateEventInput = {
 
 export type Event = {
   __typename?: 'Event';
-  bookings: Array<Booking>;
+  bookings?: Maybe<Array<Booking>>;
   capacity: Scalars['Int']['output'];
   createdAt: Scalars['DateTime']['output'];
   dateTime: Scalars['DateTime']['output'];
@@ -151,26 +151,33 @@ export type SignUpMutationVariables = Exact<{
 }>;
 
 
-export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'AuthResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string, imageUrl?: string | null, sex: Sex, role: Role, address?: string | null, phoneNumber?: string | null, bio?: string | null } } };
+export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'AuthResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string, imageUrl?: string | null, sex: Sex, role: Role, address?: string | null, phoneNumber?: string | null, bio?: string | null, createdAt: any } } };
 
 export type SignInMutationVariables = Exact<{
   signInInput: SignInInput;
 }>;
 
 
-export type SignInMutation = { __typename?: 'Mutation', signIn: { __typename?: 'AuthResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string, imageUrl?: string | null, sex: Sex, role: Role, address?: string | null, phoneNumber?: string | null, bio?: string | null } } };
+export type SignInMutation = { __typename?: 'Mutation', signIn: { __typename?: 'AuthResponse', token: string, user: { __typename?: 'User', id: string, name: string, email: string, imageUrl?: string | null, sex: Sex, role: Role, address?: string | null, phoneNumber?: string | null, bio?: string | null, createdAt: any } } };
 
 export type EventsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type EventsQuery = { __typename?: 'Query', events: Array<{ __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus }> };
+export type EventsQuery = { __typename?: 'Query', events: Array<{ __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus, createdAt: any, bookings?: Array<{ __typename?: 'Booking', id: string }> | null }> };
 
 export type EventQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type EventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus } };
+export type EventQuery = { __typename?: 'Query', event: { __typename?: 'Event', id: string, name: string, description: string, imageUrl?: string | null, dateTime: any, location: string, capacity: number, status: EventStatus, user: { __typename?: 'User', id: string, name: string, imageUrl?: string | null }, bookings?: Array<{ __typename?: 'Booking', id: string, createdAt: any, user: { __typename?: 'User', id: string, name: string, imageUrl?: string | null, address?: string | null } }> | null } };
+
+export type CreateEventMutationVariables = Exact<{
+  createEventInput: CreateEventInput;
+}>;
+
+
+export type CreateEventMutation = { __typename?: 'Mutation', createEvent: { __typename?: 'Event', id: string } };
 
 
 export const SignUpDocument = gql`
@@ -187,6 +194,7 @@ export const SignUpDocument = gql`
       address
       phoneNumber
       bio
+      createdAt
     }
   }
 }
@@ -231,6 +239,7 @@ export const SignInDocument = gql`
       address
       phoneNumber
       bio
+      createdAt
     }
   }
 }
@@ -272,6 +281,10 @@ export const EventsDocument = gql`
     location
     capacity
     status
+    createdAt
+    bookings {
+      id
+    }
   }
 }
     `;
@@ -318,6 +331,21 @@ export const EventDocument = gql`
     location
     capacity
     status
+    user {
+      id
+      name
+      imageUrl
+    }
+    bookings {
+      id
+      user {
+        id
+        name
+        imageUrl
+        address
+      }
+      createdAt
+    }
   }
 }
     `;
@@ -354,3 +382,36 @@ export type EventQueryHookResult = ReturnType<typeof useEventQuery>;
 export type EventLazyQueryHookResult = ReturnType<typeof useEventLazyQuery>;
 export type EventSuspenseQueryHookResult = ReturnType<typeof useEventSuspenseQuery>;
 export type EventQueryResult = Apollo.QueryResult<EventQuery, EventQueryVariables>;
+export const CreateEventDocument = gql`
+    mutation CreateEvent($createEventInput: CreateEventInput!) {
+  createEvent(createEventInput: $createEventInput) {
+    id
+  }
+}
+    `;
+export type CreateEventMutationFn = Apollo.MutationFunction<CreateEventMutation, CreateEventMutationVariables>;
+
+/**
+ * __useCreateEventMutation__
+ *
+ * To run a mutation, you first call `useCreateEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createEventMutation, { data, loading, error }] = useCreateEventMutation({
+ *   variables: {
+ *      createEventInput: // value for 'createEventInput'
+ *   },
+ * });
+ */
+export function useCreateEventMutation(baseOptions?: Apollo.MutationHookOptions<CreateEventMutation, CreateEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateEventMutation, CreateEventMutationVariables>(CreateEventDocument, options);
+      }
+export type CreateEventMutationHookResult = ReturnType<typeof useCreateEventMutation>;
+export type CreateEventMutationResult = Apollo.MutationResult<CreateEventMutation>;
+export type CreateEventMutationOptions = Apollo.BaseMutationOptions<CreateEventMutation, CreateEventMutationVariables>;

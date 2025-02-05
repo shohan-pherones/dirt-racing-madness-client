@@ -8,6 +8,10 @@ query Events {
     location
     capacity
     status
+    createdAt
+    bookings {
+      id
+    }
   }
 }
 
@@ -21,5 +25,26 @@ query Event($id: String!) {
     location
     capacity
     status
+    user {
+      id
+      name
+      imageUrl
+    }
+    bookings {
+      id
+      user {
+        id
+        name
+        imageUrl
+        address
+      }
+      createdAt
+    }
+  }
+}
+
+mutation CreateEvent($createEventInput: CreateEventInput!) {
+  createEvent(createEventInput: $createEventInput) {
+    id
   }
 }

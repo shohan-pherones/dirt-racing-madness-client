@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const SexEnum = z.enum(["FEMALE", "MALE", "OTHER"]);
 
-const imageUrlSchema = z
+export const imageUrlSchema = z
   .string()
   .optional()
   .refine(
