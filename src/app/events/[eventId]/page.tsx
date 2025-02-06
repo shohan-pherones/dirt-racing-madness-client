@@ -1,5 +1,6 @@
 "use client";
 
+import { BookingTable } from "@/components/blocks";
 import {
   Error,
   Loading,
@@ -18,7 +19,7 @@ import { format } from "date-fns";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, useRouter } from "next/navigation";
+import { notFound, usePathname, useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -40,6 +41,7 @@ const EventDetailsPage = ({
   );
   const [deleteBookingMutation, { loading: isDeleteBookingLoading }] =
     useDeleteBookingMutation();
+  const pathname = usePathname();
 
   useEffect(() => {
     setHasBeenBooked(
@@ -56,6 +58,10 @@ const EventDetailsPage = ({
     : data.event.capacity;
 
   const handleRegisterEntry = async () => {
+    if (!authState.user?.id) {
+      return router.push(`/sign-in?redirect=${pathname}`);
+    }
+
     try {
       const res = await createBookingMutation({
         variables: {
@@ -72,6 +78,10 @@ const EventDetailsPage = ({
   };
 
   const handleRevokeEntry = async () => {
+    if (!authState.user?.id) {
+      return router.push(`/sign-in?redirect=${pathname}`);
+    }
+
     try {
       const res = await deleteBookingMutation({
         variables: {
@@ -129,10 +139,8 @@ const EventDetailsPage = ({
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10">
           <div className="flex flex-col gap-2.5 md:gap-5">
-            <div>
-              <SectionTitle margin={false}>Description</SectionTitle>
-              <p>{data.event.description}</p>
-            </div>
+            <SectionTitle margin={false}>Description</SectionTitle>
+            <p>{data.event.description}</p>
             <ul>
               <li>
                 <b>Date:</b>{" "}
@@ -169,7 +177,16 @@ const EventDetailsPage = ({
               )}
             </div>
           </div>
-          <div>Right Side</div>
+          <div className="flex flex-col gap-2.5 md:gap-5">
+            <SectionTitle margin={false}>
+              {data.event.bookings?.length
+                ? `${data.event.bookings.length} users registered for this event`
+                : "No user registered for this event"}
+            </SectionTitle>
+            {data.event.bookings?.length && (
+              <BookingTable bookings={data.event.bookings} />
+            )}
+          </div>
         </div>
       </div>
     </section>

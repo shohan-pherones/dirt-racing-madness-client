@@ -10,8 +10,7 @@ import {
   useSignInMutation,
 } from "@/types/generated/graphql";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -22,6 +21,8 @@ const SignInPage = () => {
   const [signInMutation, { loading }] = useSignInMutation();
   const { login } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get("redirect");
 
   const onSubmit = async (data: SignInInput) => {
     try {
@@ -32,7 +33,7 @@ const SignInPage = () => {
       });
       if (res.data?.signIn) {
         login(res.data.signIn as AuthResponse);
-        router.push("/");
+        router.push(redirectPath || "/");
       }
     } catch (error) {
       toast.error(error);
@@ -63,9 +64,17 @@ const SignInPage = () => {
         </form>
         <p className="mt-2.5">
           Don&apos; have an account?{" "}
-          <Link href="/sign-up" className="link link-secondary">
+          <button
+            type="button"
+            onClick={() =>
+              router.push(
+                redirectPath ? `/sign-up?redirect=${redirectPath}` : "/sign-up"
+              )
+            }
+            className="link link-secondary"
+          >
             Sign Up
-          </Link>
+          </button>
         </p>
       </FormProvider>
     </section>
