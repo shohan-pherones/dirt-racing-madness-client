@@ -1,0 +1,11 @@
+mutation CreateBooking($createBookingInput: CreateBookingInput!) {
+  createBooking(createBookingInput: $createBookingInput) {
+    id
+  }
+}
+
+mutation DeleteBooking($deleteBookingInput: DeleteBookingInput!) {
+  deleteBooking(deleteBookingInput: $deleteBookingInput) {
+    id
+  }
+}

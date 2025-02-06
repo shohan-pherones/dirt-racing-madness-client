@@ -1,15 +1,26 @@
 "use client";
 
-import { Error, Loading, SectionTitle } from "@/components/elements";
+import {
+  Error,
+  Loading,
+  Processing,
+  SectionTitle,
+} from "@/components/elements";
 import Avatar from "@/components/elements/Avatar/Avatar";
+import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
-import { useEventQuery } from "@/types/generated/graphql";
+import {
+  useCreateBookingMutation,
+  useDeleteBookingMutation,
+  useEventQuery,
+} from "@/types/generated/graphql";
 import { format } from "date-fns";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, useRouter } from "next/navigation";
-import { use } from "react";
+import { use, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const EventDetailsPage = ({
   params,
@@ -20,7 +31,21 @@ const EventDetailsPage = ({
   const { data, loading, error } = useEventQuery({
     variables: { id: eventId },
   });
+  const [createBookingMutation, { loading: isCreateBookingLoading }] =
+    useCreateBookingMutation();
   const router = useRouter();
+  const { authState } = useAuth();
+  const [hasBeenBooked, setHasBeenBooked] = useState<boolean | undefined>(
+    false
+  );
+  const [deleteBookingMutation, { loading: isDeleteBookingLoading }] =
+    useDeleteBookingMutation();
+
+  useEffect(() => {
+    setHasBeenBooked(
+      data?.event.bookings?.some((b) => b.user.id === authState.user?.id)
+    );
+  }, [authState.user?.id, data?.event.bookings]);
 
   if (loading) return <Loading />;
   if (error) return <Error message={error.message} />;
@@ -30,7 +55,37 @@ const EventDetailsPage = ({
     ? data.event.capacity - data.event.bookings.length
     : data.event.capacity;
 
-  const handleRegisterEntry = () => {};
+  const handleRegisterEntry = async () => {
+    try {
+      const res = await createBookingMutation({
+        variables: {
+          createBookingInput: { eventId },
+        },
+      });
+      if (res.data?.createBooking) {
+        setHasBeenBooked(true);
+        toast.success("Event booking created successfully!");
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  const handleRevokeEntry = async () => {
+    try {
+      const res = await deleteBookingMutation({
+        variables: {
+          deleteBookingInput: { eventId },
+        },
+      });
+      if (res.data?.deleteBooking) {
+        setHasBeenBooked(false);
+        toast.success("Event booking deleted successfully!");
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   return (
     <section className="container py-10 md:py-20 flex flex-col gap-5 md:gap-10">
@@ -94,12 +149,24 @@ const EventDetailsPage = ({
               <button className="btn" onClick={() => router.back()}>
                 <ArrowLeft size={16} /> Go Back
               </button>
-              <button
-                className="btn btn-secondary"
-                onClick={handleRegisterEntry}
-              >
-                Register Entry
-              </button>
+              {!hasBeenBooked && (
+                <button
+                  disabled={isCreateBookingLoading}
+                  className="btn btn-secondary"
+                  onClick={handleRegisterEntry}
+                >
+                  {isCreateBookingLoading ? <Processing /> : "Register Entry"}
+                </button>
+              )}
+              {hasBeenBooked && (
+                <button
+                  disabled={isDeleteBookingLoading}
+                  className="btn btn-accent"
+                  onClick={handleRevokeEntry}
+                >
+                  {isDeleteBookingLoading ? <Processing /> : "Revoke Entry"}
+                </button>
+              )}
             </div>
           </div>
           <div>Right Side</div>
